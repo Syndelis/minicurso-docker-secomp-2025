@@ -4,6 +4,8 @@ services:
     environment:
       # Replace with $(id -u):$(id -g)
       - MARP_USER=1000:1000
+    ports:
+      - 37717:37717
     volumes:
       - ./slides/:/home/marp/app
-    command: -w main.md
+    command: --theme-set title.css -w main.md
