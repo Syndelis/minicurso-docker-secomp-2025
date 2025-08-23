@@ -7,6 +7,13 @@ class:
 header: UFSJ | Secomp 2025
 footer: Minicurso Docker
 style: |
+  @font-face {
+    font-family: 'Big Noodle Too Oblique';
+    src: url('font/bignoodletoooblique.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
   h1, h2, h3, h4, h5 {
     border-bottom: none !important;
   }
@@ -48,6 +55,25 @@ style: |
   .column-14 {
     grid-column: 4 / 4;
   }
+
+  section.title h1 {
+    font-size: 120px;
+    font-family: 'Big Noodle Too Oblique';
+    color: white;
+    background-color: blue;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  section.small h1 {
+    font-size: 80px;
+  }
+
+  .warning {
+    background-color: red;
+  }
 ---
 
 <!-- _header: '' -->
@@ -68,7 +94,7 @@ style: |
 
 ### 0. Sobre mim
 
-TODO
+<div class="warning">TODO: Write this down</div>
 
 --- 
 
@@ -87,6 +113,8 @@ $ docker run --rm hello-world
 <div class="centered">
 
 # Aprenda a user Docker!
+
+<div class="warning">TODO: repository QR</div>
 
 </div>
 
@@ -125,6 +153,8 @@ $ docker run --rm hello-world
 <!-- Perguntar se os alunos estão familiares com o conceito de máquinas virtuais -->
 <!-- Senão, fazer um paralelo com emuladores -->
 
+<!-- _class: title -->
+
 # 1. O que é Docker?
 
 Docker é uma coleção de ferramentas de virtualização. Pode ser comparado com máquinas virtuais, porém possui uma abordagem programática.
@@ -143,6 +173,8 @@ Docker possui inúmeras aplicações. Aqui estão algumas que abordaremos neste 
 - Rodar _pipelines_ em ambientes externos como [GitHub Actions](https://docs.github.com/en/actions);
 
 ---
+
+<!-- _class: title small -->
 
 # 2. Rodando programas sem instalá-los
 
