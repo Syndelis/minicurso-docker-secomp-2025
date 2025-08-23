@@ -1,0 +1,9 @@
+services:
+  watcher:
+    image: marpteam/marp-cli:v4.2.3
+    environment:
+      # Replace with $(id -u):$(id -g)
+      - MARP_USER=1000:1000
+    volumes:
+      - ./slides/:/home/marp/app
+    command: -w main.md
