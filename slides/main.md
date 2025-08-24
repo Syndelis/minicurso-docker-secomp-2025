@@ -120,8 +120,6 @@ $ docker run --rm hello-world
 
 # Aprenda a user Docker!
 
-<div class="warning">TODO: repository QR</div>
-
 </div>
 
 <div class="three-columns">
@@ -136,17 +134,17 @@ $ docker run --rm hello-world
 
 <div class="centered">
 
-["Documentação"](https://doc.rust-lang.org/book/)
+[Repositório dos slides](https://github.com/Syndelis/minicurso-docker-secomp-2025)
 
-![w:280px](./img/qr-the-book.svg)
+![w:280px](./img/qrcode-git.png)
 
 </div>
 
 <div class="centered">
 
-[secomp2025.brenno.codes](https://secomp2025.brenno.codes)
+[Documentação Docker](https://docs.docker.com/)
 
-![w:280px](./img/qrcode-slides.png)
+![w:280px](./img/qrcode-docker-docs.png)
 
 </div>
 
