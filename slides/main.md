@@ -61,7 +61,7 @@ style: |
     line-height: 120px;
     font-family: 'Big Noodle Too Oblique';
     color: white;
-    background-color: blue;
+    background-color: #1E63EE;
     position: absolute;
     top: 0;
     left: 0;
@@ -71,6 +71,10 @@ style: |
   section.small h1 {
     font-size: 80px;
     line-height: 80px;
+  }
+
+  section.attention h1 {
+    background-color: #EE1E63 !important;
   }
 
   .warning {
@@ -210,3 +214,68 @@ http://localhost:3923
 
 </div>
 
+---
+
+# 2.1. Usando qualquer versão de Python
+
+Muitos programas famosos estão disponíveis em formas de imagens no [Docker Hub](https://hub.docker.com).
+
+Por exemplo, é possível usar a versão mais recente de Python para rodar um script:
+
+```sh
+docker run --rm -v ./:/tmp python:3.13 python3 /tmp/hello_world.py
+```
+
+Isto pode ser útil quando a versão desejada do interpretador não estiver disponível na máquina. Por exemplo, Ubuntu 22.04 e derivados possuem Python 3.10 instalado, mas a versão 3.13 já foi lançada.
+
+<!-- De forma similar, estes slides são "compilados" em HTML por meio de ferramenta de JavaScript que eu propositalmente não instalei no meu computador. Ao invés, eu usei um contêiner com a ferramenta pré-instalada. -->
+
+<!-- Exercitar a execução de contêiner Python interativo para facilitar a transição para o próximo slide -->
+
+---
+
+# 2.1.1. E as dependências?
+
+Poderíamos escrever um shell script para instalar uma biblioteca e depois executar o nosso script.
+
+<div class="columns">
+
+<div>
+
+`mult_array.sh`
+```sh
+#!/usr/bin/env bash
+pip3 install numpy
+python3 mult_array.py
+```
+
+</div>
+
+
+<div>
+
+`mult_array.py`
+```py
+import numpy as np
+x = np.array([1, 2, 3, 4])
+print(x * 3)
+```
+
+</div>
+</div>
+
+```sh
+docker run --rm -v ./:/tmp -w /tmp python:3.13 bash mult_array.sh
+```
+
+Contudo, há um problema: sempre que executamos o contêiner, a dependência tem que ser baixada novamente. Veremos no próximo capítulo como podemos construir novas imagens de Docker para evitar isso.
+
+---
+
+<!-- _header: '' -->
+<!-- footer: 'As explicações neste slide estão dramaticamente simplificadas para efeitos didáticos. ' -->
+<!-- _class: attention title small -->
+
+# ?.?. Intermissão: O que é uma imagem de Docker?
+
+De forma simplificada, todo comando executado com Docker está dentro de um contêiner. Todo contêiner
