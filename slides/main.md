@@ -58,6 +58,7 @@ style: |
 
   section.title h1 {
     font-size: 120px;
+    line-height: 120px;
     font-family: 'Big Noodle Too Oblique';
     color: white;
     background-color: blue;
@@ -69,6 +70,7 @@ style: |
 
   section.small h1 {
     font-size: 80px;
+    line-height: 80px;
   }
 
   .warning {
@@ -154,6 +156,7 @@ $ docker run --rm hello-world
 <!-- Senão, fazer um paralelo com emuladores -->
 
 <!-- _class: title -->
+<!-- _header: '' -->
 
 # 1. O que é Docker?
 
@@ -175,7 +178,35 @@ Docker possui inúmeras aplicações. Aqui estão algumas que abordaremos neste 
 ---
 
 <!-- _class: title small -->
+<!-- _header: '' -->
+<!-- _footer: 'Todos os comandos usados durante este minicurso estão disponíveis no [repositório](https://github.com/Syndelis/minicurso-docker-secomp-2025)' -->
 
 # 2. Rodando programas sem instalá-los
 
+Neste exemplo, executaremos a aplicação [Copyparty](https://github.com/9001/copyparty/) usando Docker, sem a necessidade de instalar o programa ou suas dependências.
+
+<div class="columns">
+
+<div>
+
+```sh
+docker run --rm -it \
+ -u 1000 -p 3923:3923 \
+ -v .:/w copyparty/min -v .::rw:a
+```
+
+Rode este comando e acesse o serviço pelo navegador:
+
+http://localhost:3923
+
+</div>
+
+
+<div>
+
+![w:560px](./img/copyparty.png)
+
+</div>
+
+</div>
 
