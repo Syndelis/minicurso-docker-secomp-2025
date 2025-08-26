@@ -80,6 +80,21 @@ style: |
   .warning {
     background-color: red;
   }
+
+  blockquote {
+    border: none !important;
+    border-left: none !important;
+  }
+
+  blockquote p::before {
+    content: "\201C";
+    font-size: 80px;
+  }
+
+  blockquote p::after {
+    content: "\201D";
+    font-size: 80px;
+  }
 ---
 
 <!-- _header: '' -->
@@ -270,10 +285,38 @@ Contudo, há um problema: sempre que executamos o contêiner, a dependência tem
 
 ---
 
+<!-- _class: title small -->
+<!-- _header: '' -->
+
+# 3. Compilando programas para outro OS
+
+É possível usar o Docker para compilar programas para outros sistemas operacionais. Por exemplo, seria possível rodar Docker no Windows ou MacOS (_internamente gerenciado por VMs_) e compilar programas para Linux.
+
+Neste exemplo, escreveremos uma nova imagem de Docker que compila um programa em C e o executa.
+
+---
+
 <!-- _header: '' -->
 <!-- footer: 'As explicações neste slide estão dramaticamente simplificadas para efeitos didáticos. ' -->
 <!-- _class: attention title small -->
 
-# ?.?. Intermissão: O que é uma imagem de Docker?
+# 3.1. Intermissão: O que é uma imagem de Docker?
 
-De forma simplificada, todo comando executado com Docker está dentro de um contêiner. Todo contêiner
+> ASD
+
+De forma simplificada, todo comando executado com Docker está dentro de um contêiner. Todo contêiner é baseado em uma imagem, e toda imagem possui múltiplas camadas. Nada se cria, tudo se copia.
+
+<div class="columns">
+
+<div>
+
+H
+
+</div>
+
+<div>
+
+![h:300px](./img/docker-layers.png)
+
+</div>
+</div>
