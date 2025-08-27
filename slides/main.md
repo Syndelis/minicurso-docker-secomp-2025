@@ -317,7 +317,7 @@ Isto pode ser útil quando a versão desejada do interpretador não estiver disp
 
 ---
 
-# 2.2.1. E as dependências?
+### 2.2.1. E as dependências?
 
 Poderíamos escrever um shell script para instalar uma biblioteca e depois executar o nosso script.
 
@@ -366,11 +366,29 @@ Neste exemplo, escreveremos uma nova imagem de Docker que compila um programa em
 
 ---
 
+# 3.1. Criando sua primeira imagem
+
+```docker
+FROM debian                                  # <-- Camada base
+RUN apt-get update && apt-get install -y gcc # <-- Instale GCC
+COPY main.c main.c                           # <-- Copie o programa do computador para o contêiner
+RUN gcc main.c -o main                       # <-- Compile o programa
+ENTRYPOINT ["./main"]                        # <-- Rode o programa
+```
+
+```sh
+$ docker build . -t minha_imagem -f Dockerfile
+
+$ docker run --rm minha_imagem
+```
+
+---
+
 <!-- _header: '' -->
 <!-- _footer: 'As explicações neste slide estão dramaticamente simplificadas para efeitos didáticos. ' -->
 <!-- _class: attention title small lead invert -->
 
-# 3.1. Intermissão: O que é uma imagem de Docker?
+# 3.2. Intermissão: O que é uma imagem de Docker?
 
 De forma simplificada, todo comando executado com Docker está dentro de um contêiner. Todo contêiner é baseado em uma imagem, e toda imagem possui múltiplas camadas. _Nada se cria, tudo se copia_.
 
@@ -389,24 +407,23 @@ Cada camada pode modificar o sistema de arquivos. Por exemplo, se a camada base 
 </div>
 </div>
 
----
-
-# 3.2. Criando sua primeira imagem
-
-```docker
-FROM debian                                  # <-- Camada base
-RUN apt-get update && apt-get install -y gcc # <-- Instale GCC
-COPY main.c main.c                           # <-- Copie o programa do computador para o contêiner
-RUN gcc main.c -o main                       # <-- Compile o programa
-ENTRYPOINT ["./main"]                        # <-- Rode o programa
-```
-
-```sh
-$ docker build -t minha_imagem -f Dockerfile .
-
-$ docker run minha_imagem
-```
 
 ---
 
 ## 3.3. Reparação histórica: criando nossa imagem de Python
+
+```docker
+FROM python:3.13-alpine
+RUN pip install numpy
+WORKDIR /app
+COPY mult_array.py .
+ENTRYPOINT ["python3", "mult_array.py"]
+```
+
+```sh
+$ docker build . -t python_mult_array -f Dockerfile
+
+$ docker run --rm python_mult_array
+```
+
+Nesta imagem, o [NumPy](https://numpy.org/) será instalado durante o comando `docker build`. Portanto, não será necessário reinstalá-lo cada vez que executarmos a imagem com `docker run`

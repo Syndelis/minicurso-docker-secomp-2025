@@ -1,0 +1,13 @@
+FROM python:3.13-alpine
+
+RUN pip install numpy
+
+WORKDIR /app
+
+# The path parameter of `docker build` will need to be
+# `..` so it can look up the parent folder
+# Example: docker build .. -t python_mult_array -f Dockerfile.python
+COPY chap-2/mult_array.py .
+
+ENTRYPOINT ["python3", "mult_array.py"]
+
