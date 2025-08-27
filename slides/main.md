@@ -40,12 +40,21 @@ style: |
     gap: 1rem;
   }
 
-  .column-23 {
+  .column-23-start {
     grid-column: 1 / 3;
   }
 
-  .column-13 {
+  .column-13-end {
     grid-column: 3 / 3;
+  }
+
+
+  .column-13-start {
+    grid-column: 1 / 2;
+  }
+
+  .column-23-end {
+    grid-column: 2 / 3;
   }
 
   .column-34 {
@@ -62,6 +71,7 @@ style: |
     font-family: 'Big Noodle Too Oblique';
     color: white;
     background-color: #1E63EE;
+    padding: initial;
     position: absolute;
     top: 0;
     left: 0;
@@ -71,6 +81,11 @@ style: |
   section.small h1 {
     font-size: 80px;
     line-height: 80px;
+  }
+
+  section.tiny h1 {
+    font-size: 60px;
+    line-height: 60px;
   }
 
   section.attention h1 {
@@ -85,6 +100,23 @@ style: |
     border: none !important;
     border-left: none !important;
   }
+
+  .list-right {
+    /* text-align: right; */
+  }
+
+  .list-right ::marker {
+    content: "←    "
+  }
+
+  .fixed-list {
+    line-height: 50px;
+  }
+
+  section li + li {
+    margin-top: 0 !important;
+  }
+
 ---
 
 <!-- _header: '' -->
@@ -162,7 +194,7 @@ $ docker run --rm hello-world
 <!-- Perguntar se os alunos estão familiares com o conceito de máquinas virtuais -->
 <!-- Senão, fazer um paralelo com emuladores -->
 
-<!-- _class: title -->
+<!-- _class: title lead invert -->
 <!-- _header: '' -->
 
 # 1. O que é Docker?
@@ -184,7 +216,7 @@ Docker possui inúmeras aplicações. Aqui estão algumas que abordaremos neste 
 
 ---
 
-<!-- _class: title small -->
+<!-- _class: title small lead invert -->
 <!-- _header: '' -->
 <!-- _footer: 'Todos os comandos usados durante este minicurso estão disponíveis no [repositório](https://github.com/Syndelis/minicurso-docker-secomp-2025)' -->
 
@@ -219,7 +251,55 @@ http://localhost:3923
 
 ---
 
-# 2.1. Usando qualquer versão de Python
+<!-- _header: '' -->
+<!-- _footer: 'As explicações neste slide estão dramaticamente simplificadas para efeitos didáticos. ' -->
+<!-- _class: attention title tiny lead invert -->
+
+# 2.1. Intermissão: A anatomia de um comando Docker
+
+<div class="unequal-columns">
+
+<div class="column-13-start fixed-list">
+
+<!-- - `docker run` -->
+<!-- - `--rm` -->
+<!-- - `-it` -->
+<!-- - `-u 1000` -->
+<!-- - `-p 3923:3923` -->
+<!-- - `-v .:/w` -->
+<!-- - `copyparty/min` -->
+<!-- - `-v .::rw:a` -->
+
+
+- docker run
+- --rm
+- -it
+- -u 1000
+- -p 3923:3923
+- -v .:/w
+- copyparty/min
+- -v .::rw:a
+
+</div>
+
+<div class="column-23-end list-right fixed-list">
+
+- Comando e subcomando. "Execute algo"
+- **R**e**m**ova o contêiner após ele terminar de executar
+- **-i**= interativo; **-t** = TTY, ou "terminal"
+- Executar como usuário 1000 (o padrão)
+- Exponha a porta 3923
+- Compartilhe a pasta local com o contêiner em **/w**
+- Nome da imagem (em https://hub.docker.com/)
+- Este é um argumento para o programa executado no contêiner. Não tem relação com o **-v** anterior
+
+</div>
+
+</div>
+
+---
+
+# 2.2. Usando qualquer versão de Python
 
 Muitos programas famosos estão disponíveis em formas de imagens no [Docker Hub](https://hub.docker.com).
 
@@ -237,7 +317,7 @@ Isto pode ser útil quando a versão desejada do interpretador não estiver disp
 
 ---
 
-# 2.1.1. E as dependências?
+# 2.2.1. E as dependências?
 
 Poderíamos escrever um shell script para instalar uma biblioteca e depois executar o nosso script.
 
@@ -275,7 +355,7 @@ Contudo, há um problema: sempre que executamos o contêiner, a dependência tem
 
 ---
 
-<!-- _class: title small -->
+<!-- _class: title small lead invert-->
 <!-- _header: '' -->
 
 # 3. Compilando programas para outro 'OS'
@@ -288,7 +368,7 @@ Neste exemplo, escreveremos uma nova imagem de Docker que compila um programa em
 
 <!-- _header: '' -->
 <!-- _footer: 'As explicações neste slide estão dramaticamente simplificadas para efeitos didáticos. ' -->
-<!-- _class: attention title small -->
+<!-- _class: attention title small lead invert -->
 
 # 3.1. Intermissão: O que é uma imagem de Docker?
 
