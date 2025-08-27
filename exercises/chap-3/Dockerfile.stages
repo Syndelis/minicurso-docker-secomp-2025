@@ -1,0 +1,13 @@
+FROM alpine:3.22 AS builder
+
+WORKDIR /app
+COPY main.c main.c
+
+RUN apk add gcc musl-dev
+RUN gcc -static main.c -o main
+
+FROM scratch AS runner
+
+COPY --from=builder /app/main /
+
+ENTRYPOINT ["./main"]

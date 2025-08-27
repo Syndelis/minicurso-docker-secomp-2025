@@ -85,16 +85,6 @@ style: |
     border: none !important;
     border-left: none !important;
   }
-
-  blockquote p::before {
-    content: "\201C";
-    font-size: 80px;
-  }
-
-  blockquote p::after {
-    content: "\201D";
-    font-size: 80px;
-  }
 ---
 
 <!-- _header: '' -->
@@ -288,7 +278,7 @@ Contudo, há um problema: sempre que executamos o contêiner, a dependência tem
 <!-- _class: title small -->
 <!-- _header: '' -->
 
-# 3. Compilando programas para outro OS
+# 3. Compilando programas para outro 'OS'
 
 É possível usar o Docker para compilar programas para outros sistemas operacionais. Por exemplo, seria possível rodar Docker no Windows ou MacOS (_internamente gerenciado por VMs_) e compilar programas para Linux.
 
@@ -297,20 +287,18 @@ Neste exemplo, escreveremos uma nova imagem de Docker que compila um programa em
 ---
 
 <!-- _header: '' -->
-<!-- footer: 'As explicações neste slide estão dramaticamente simplificadas para efeitos didáticos. ' -->
+<!-- _footer: 'As explicações neste slide estão dramaticamente simplificadas para efeitos didáticos. ' -->
 <!-- _class: attention title small -->
 
 # 3.1. Intermissão: O que é uma imagem de Docker?
 
-> ASD
-
-De forma simplificada, todo comando executado com Docker está dentro de um contêiner. Todo contêiner é baseado em uma imagem, e toda imagem possui múltiplas camadas. Nada se cria, tudo se copia.
+De forma simplificada, todo comando executado com Docker está dentro de um contêiner. Todo contêiner é baseado em uma imagem, e toda imagem possui múltiplas camadas. _Nada se cria, tudo se copia_.
 
 <div class="columns">
 
 <div>
 
-H
+Cada camada pode modificar o sistema de arquivos. Por exemplo, se a camada base for uma distribuição Linux como o [Debian](https://www.debian.org/), uma possível próxima camada poderia instalar um programa, como o [Emacs](https://www.gnu.org/software/emacs/) o GCC, ou o Python.
 
 </div>
 
@@ -320,3 +308,25 @@ H
 
 </div>
 </div>
+
+---
+
+# 3.2. Criando sua primeira imagem
+
+```docker
+FROM debian                                  # <-- Camada base
+RUN apt-get update && apt-get install -y gcc # <-- Instale GCC
+COPY main.c main.c                           # <-- Copie o programa do computador para o contêiner
+RUN gcc main.c -o main                       # <-- Compile o programa
+ENTRYPOINT ["./main"]                        # <-- Rode o programa
+```
+
+```sh
+$ docker build -t minha_imagem -f Dockerfile .
+
+$ docker run minha_imagem
+```
+
+---
+
+## 3.3. Reparação histórica: criando nossa imagem de Python
