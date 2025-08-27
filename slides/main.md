@@ -117,6 +117,10 @@ style: |
     margin-top: 0 !important;
   }
 
+  section.figure-background figure {
+    background-color: #010713 !important;
+  }
+
 ---
 
 <!-- _header: '' -->
@@ -202,6 +206,8 @@ $ docker run --rm hello-world
 Docker é uma coleção de ferramentas de virtualização. Pode ser comparado com máquinas virtuais, porém possui uma abordagem programática.
 
 Isto quer dizer que o Docker é ideal para a criação de ambientes reproduzíveis, isto é, ambientes que possa ser criado uma vez e executado inúmeras vezes em diferentes máquinas, sempre gerando o mesmo resultado.
+
+![bg right:35%](./img/containers.png)
 
 ---
 
@@ -362,7 +368,7 @@ Contudo, há um problema: sempre que executamos o contêiner, a dependência tem
 
 É possível usar o Docker para compilar programas para outros sistemas operacionais. Por exemplo, seria possível rodar Docker no Windows ou MacOS (_internamente gerenciado por VMs_) e compilar programas para Linux.
 
-Neste exemplo, escreveremos uma nova imagem de Docker que compila um programa em C e o executa.
+No próximo exemplo, escreveremos uma nova imagem de Docker que compila um programa em C e o executa.
 
 ---
 
@@ -407,7 +413,6 @@ Cada camada pode modificar o sistema de arquivos. Por exemplo, se a camada base 
 </div>
 </div>
 
-
 ---
 
 ## 3.3. Reparação histórica: criando nossa imagem de Python
@@ -427,3 +432,23 @@ $ docker run --rm python_mult_array
 ```
 
 Nesta imagem, o [NumPy](https://numpy.org/) será instalado durante o comando `docker build`. Portanto, não será necessário reinstalá-lo cada vez que executarmos a imagem com `docker run`
+
+---
+
+<!-- _header: '' -->
+<!-- _class: lead invert title tiny figure-background -->
+<!-- _style: -->
+
+# 4. Executando serviços com Docker
+
+Nas seções anteriores, foi demonstrado como o Docker pode ser usado pra criar um ambiente reproduzível, seja para executar um programa que finaliza após algum tempo (como em **3.1.**) ou para agir como um servidor, que executa até que o usuário o termine (como em **2.**).
+
+Nesta seção, veremos como podemos organizar diferentes serviços para trabalhar em conjunto com uma ferramenta conhecida como [Docker Compose](https://docs.docker.com/compose/).
+
+Este processo é conhecido como "orquestração".
+
+![bg right:35% w:630px](./img/orchestration.png)
+
+---
+
+## 4.1. Caso de uso: execução de um servidor web com banco de dados
