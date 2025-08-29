@@ -27,7 +27,7 @@ jobs:
         run: mkdir -p build
 
       - name: Copy images and fonts
-        run: if [[ -d slides/ ]]; then cp -R slides/ build/; fi
+        run: if [[ -d slides/ ]]; then cp -R slides/* build/; fi
 
       - name: Markdown to HTML
         uses: docker://ghcr.io/marp-team/marp-cli:v4.2.3
