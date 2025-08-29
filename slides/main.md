@@ -164,7 +164,7 @@ $ docker run --rm hello-world
 
 <div class="centered">
 
-# Aprenda a user Docker!
+# Aprenda a usar Docker!
 
 </div>
 
@@ -216,7 +216,7 @@ Isto quer dizer que o Docker é ideal para a criação de ambientes reproduzíve
 
 ---
 
-# 1.1. Pra quê serve o Docker?
+# 1.1. Pra que serve o Docker?
 
 Docker possui inúmeras aplicações. Aqui estão algumas que abordaremos neste minicurso:
 
@@ -368,15 +368,37 @@ No próximo exemplo, escreveremos uma nova imagem de Docker que compila um progr
 
 ---
 
+<!-- _footer: '`main.c` pode ser encontrada no [repositório](https://github.com/Syndelis/minicurso-docker-secomp-2025/blob/main/exercises/chap-3/main.c), em `exercises/chap-3/main.c`' -->
+
 # 3.1. Criando sua primeira imagem
 
+<div class="columns">
+
+<div>
+
 ```docker
-FROM debian                                  # <-- Camada base
-RUN apt-get update && apt-get install -y gcc # <-- Instale GCC
-COPY main.c main.c                           # <-- Copie o programa do computador para o contêiner
-RUN gcc main.c -o main                       # <-- Compile o programa
-ENTRYPOINT ["./main"]                        # <-- Rode o programa
+FROM debian
+RUN apt-get update && apt-get install -y gcc
+COPY main.c main.c
+RUN gcc main.c -o main
+ENTRYPOINT ["./main"]
 ```
+
+</div>
+
+<div>
+
+```
+<-- Camada base
+<-- Instale GCC
+<-- Copie o programa local para o contêiner
+<-- Compile o programa
+<-- Rode o programa
+```
+
+</div>
+
+</div>
 
 ```sh
 $ docker build . -t minha_imagem -f Dockerfile
@@ -400,7 +422,7 @@ De forma simplificada, todo comando executado com Docker está dentro de um cont
 
 <div>
 
-Cada camada pode modificar o sistema de arquivos. Por exemplo, se a camada base for uma distribuição Linux como o [Debian](https://www.debian.org/), uma possível próxima camada poderia instalar um programa, como o [Emacs](https://www.gnu.org/software/emacs/) o GCC, ou o Python.
+Cada camada pode modificar o sistema de arquivos. Por exemplo, se a camada base for uma distribuição Linux como o [Debian](https://www.debian.org/), uma possível próxima camada poderia instalar um programa, como [Emacs](https://www.gnu.org/software/emacs/), GCC, ou Python.
 
 </div>
 
@@ -441,6 +463,8 @@ A modificação de arquivos por camada ocorre de uma maneira que evite o desperd
 ![bg fit](./img/overlay-jvans.jpeg)
 
 ---
+
+<!-- _footer: '`mult_array.py` pode ser encontrada no [repositório](https://github.com/Syndelis/minicurso-docker-secomp-2025/blob/main/exercises/chap-2/mult_array.py), em `exercises/chap-2/mult_array.py`' -->
 
 ## 3.3. Reparação histórica: criando nossa imagem de Python
 
@@ -529,7 +553,7 @@ services:
     build: .
     environment:
       DATABASE_URL: |
-      postgresql+psycopg2://user:password@db:5432/app
+        postgresql+psycopg2://user:password@db:5432/app
     ports:
       - 8000:8000
 ```
