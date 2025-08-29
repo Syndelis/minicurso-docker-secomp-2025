@@ -576,3 +576,149 @@ Podemos nos aproveitar destas _pipelines_ para criar um fluxo de lançamento con
 
 ![bg right:25%](./img/portal2-pipe.jpg)
 
+---
+
+## 5.1. Escrevendo workflows para o GitHub
+
+<div class="columns">
+
+<div>
+
+No GitHub, arquivos em `.github/workflows/` definem fluxos que podem ser executados em diferentes circunstâncias, a depender da tag `on` do arquivo. 
+
+No exemplo ao lado, vemos um fluxo que emitirá nos logs de execução uma mensagem "Hello, World!"
+
+</div>
+
+<div>
+
+`.github/workflows/hello_world.yml`
+
+```yaml
+name: Hello World
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello world
+        shell: bash
+        run: echo Hello, World!
+```
+
+</div>
+
+</div>
+
+---
+
+<!-- _footer: '' -->
+
+###### 5.2. Workflows para a compilação de código
+
+```yaml
+name: Compile and Run
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # roda uma ação pré-definida encontrada em
+      # https://github.com/actions/checkout
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Compile code
+        shell: bash
+        run: gcc main.c -o main
+      - name: Run it
+        shell: bash
+        run: ./main
+```
+
+---
+
+<!-- _class: lead invert title tiny attention -->
+
+# 5.3. Recursão? Publicando slides com um workflow
+
+<div class="columns">
+
+<div>
+
+```yaml
+- name: Markdown to HTML
+  uses: docker://ghcr.io/marp-team/marp-cli:v4.2.3
+  env:
+    MARP_USER: root:root
+  with:
+    args: slides/main.md-o build/index.html --html
+
+- name: Deploy production
+  uses: JamesIves/github-pages-deploy-action@v4
+  with:
+    branch: gh-pages
+    folder: ./build/
+```
+
+</div>
+
+
+<div>
+
+Este trecho faz parte da definição do workflow neste repositório que realiza a publicação dos slides em https://secomp2025.brenno.codes/
+
+</div>
+
+</div>
+
+O fluxo utiliza a mesma imagem de Docker que foi usada localmente durante a escrita dos slides, garantindo que a mesma ferramenta, na mesma versão e com as mesmas dependências, está sendo usada. Assim, os resultados são idênticos.
+
+---
+
+### 5.4. Extra: publicando suas próprias imagens
+
+<div class="columns">
+
+<div>
+
+Imagens de Docker devem ser publicadas em repositórios de imagens. Exemplos destes repositórios são: [Docker Hub](https://hub.docker.com/), [GHCR](https://ghcr.io) (_GitHub Container Registry_), e [AWS ECR](https://aws.amazon.com/ecs/) (_Elastic Container Registry_).
+
+</div>
+
+<div>
+
+```yaml
+- name: Log in to the Container registry
+  uses: docker/login-action@v2
+  with:
+    registry: ghcr.io
+    username: ${{ github.actor }}
+    password: ${{ secrets.GITHUB_TOKEN }}
+
+- name: Define Image Tag
+  id: image-tag
+  shell: bash
+  env:
+    USER_AND_REPO: ${{ github.repository }}
+  run: echo "tag=ghcr.io/${USER_AND_REPO,,}:latest" >> "$GITHUB_OUTPUT"
+
+- name: Build and Publish Image
+  uses: docker/build-push-action@v5
+  with:
+    push: true
+    tags: ${{ steps.image-tag.outputs.tag }}
+```
+
+</div>
+
+</div>
+
+Cada um possuirá diferentes métodos para a autenticação, mas a ação de publicar uma imagem em qualquer caso está relacionada ao comando `docker push`. 
+
+O exemplo deste slide contém um trecho que poderia ser utilizado para publicar uma nova imagem no GHCR.
