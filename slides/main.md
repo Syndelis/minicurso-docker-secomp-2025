@@ -121,6 +121,11 @@ style: |
     background-color: #010713 !important;
   }
 
+  div.small {
+    font-size: 20px;
+    line-height: 0.5;
+  }
+
 ---
 
 <!-- _header: '' -->
@@ -196,7 +201,7 @@ $ docker run --rm hello-world
 ---
 
 <!-- Perguntar se os alunos estão familiares com o conceito de máquinas virtuais -->
-<!-- Senão, fazer um paralelo com emuladores -->
+<!-- Senão, fazer um paralelo com emuladores (com a diferença de emular hardware+software vs emular primariamente software) -->
 
 <!-- _class: title lead invert -->
 <!-- _header: '' -->
@@ -205,7 +210,7 @@ $ docker run --rm hello-world
 
 Docker é uma coleção de ferramentas de virtualização. Pode ser comparado com máquinas virtuais, porém possui uma abordagem programática.
 
-Isto quer dizer que o Docker é ideal para a criação de ambientes reproduzíveis, isto é, ambientes que possa ser criado uma vez e executado inúmeras vezes em diferentes máquinas, sempre gerando o mesmo resultado.
+Isto quer dizer que o Docker é ideal para a criação de ambientes reproduzíveis, isto é, ambientes que possam ser criados uma vez e executados inúmeras vezes em diferentes máquinas, sempre gerando o mesmo resultado.
 
 ![bg right:35%](./img/containers.png)
 
@@ -228,7 +233,7 @@ Docker possui inúmeras aplicações. Aqui estão algumas que abordaremos neste 
 
 # 2. Rodando programas sem instalá-los
 
-Neste exemplo, executaremos a aplicação [Copyparty](https://github.com/9001/copyparty/) usando Docker, sem a necessidade de instalar o programa ou suas dependências.
+Neste exemplo, executaremos a aplicação [Copyparty](https://github.com/9001/copyparty/) usando Docker, sem a necessidade de instalar o programa ou suas dependências no computador.
 
 <div class="columns">
 
@@ -258,7 +263,6 @@ http://localhost:3923
 ---
 
 <!-- _header: '' -->
-<!-- _footer: 'As explicações neste slide estão dramaticamente simplificadas para efeitos didáticos. ' -->
 <!-- _class: attention title tiny lead invert -->
 
 # 2.1. Intermissão: A anatomia de um comando Docker
@@ -266,16 +270,6 @@ http://localhost:3923
 <div class="unequal-columns">
 
 <div class="column-13-start fixed-list">
-
-<!-- - `docker run` -->
-<!-- - `--rm` -->
-<!-- - `-it` -->
-<!-- - `-u 1000` -->
-<!-- - `-p 3923:3923` -->
-<!-- - `-v .:/w` -->
-<!-- - `copyparty/min` -->
-<!-- - `-v .::rw:a` -->
-
 
 - docker run
 - --rm
@@ -307,7 +301,7 @@ http://localhost:3923
 
 # 2.2. Usando qualquer versão de Python
 
-Muitos programas famosos estão disponíveis em formas de imagens no [Docker Hub](https://hub.docker.com).
+Muitos programas e ferramentas famosas estão disponíveis em formato de imagens no [Docker Hub](https://hub.docker.com).
 
 Por exemplo, é possível usar a versão mais recente de Python para rodar um script:
 
@@ -325,7 +319,7 @@ Isto pode ser útil quando a versão desejada do interpretador não estiver disp
 
 ### 2.2.1. E as dependências?
 
-Poderíamos escrever um shell script para instalar uma biblioteca e depois executar o nosso script.
+Poderíamos escrever um _shell script_ para instalar uma biblioteca e depois executar o nosso script.
 
 <div class="columns">
 
@@ -359,6 +353,8 @@ docker run --rm -v ./:/tmp -w /tmp python:3.13 bash mult_array.sh
 
 Contudo, há um problema: sempre que executamos o contêiner, a dependência tem que ser baixada novamente. Veremos no próximo capítulo como podemos construir novas imagens de Docker para evitar isso.
 
+<!-- Explicar que, se não usássemos o '--rm', a dependência estaria pelo menos cacheada da próxima execução, mas ainda seria realizada a tentativa de instalá-la novamente -->
+
 ---
 
 <!-- _class: title small lead invert-->
@@ -388,6 +384,8 @@ $ docker build . -t minha_imagem -f Dockerfile
 $ docker run --rm minha_imagem
 ```
 
+<!-- Mostrar o alpine como alternativa ao debian. Mostrar que não é possível rodar um programa compilado pra uma máquina mais nova em uma mais velha (user trixie-slim vs stretch-slim) -->
+
 ---
 
 <!-- _header: '' -->
@@ -415,6 +413,35 @@ Cada camada pode modificar o sistema de arquivos. Por exemplo, se a camada base 
 
 ---
 
+<!-- _footer: '¹ Overlay FS é uma das maneiras com a qual o Docker pode escolher gerenciar as camadas, mas todas as outras opções funcionam de maneiras similares para o propósito desta explicação.' -->
+
+## 3.2.1. Overlay FS
+
+<div class="columns">
+
+<div>
+
+A modificação de arquivos por camada ocorre de uma maneira que evite o desperdício de armazenamento da máquina. Quando um arquivo é modificado dentro de um contêiner em execução, por exemplo, esta modificação ocorre apenas na camada do contêiner, que é sobreposta sobre as camadas anteriores. Isto é gerenciado por um sistema do Linux conhecido como OverlayFS¹. 
+
+</div>
+
+<div>
+
+![width:900px](./img/overlay-fs.png)
+
+</div>
+
+</div>
+
+---
+
+<!-- _header: '' -->
+<!-- _footer: '' -->
+
+![bg fit](./img/overlay-jvans.jpeg)
+
+---
+
 ## 3.3. Reparação histórica: criando nossa imagem de Python
 
 ```docker
@@ -437,7 +464,6 @@ Nesta imagem, o [NumPy](https://numpy.org/) será instalado durante o comando `d
 
 <!-- _header: '' -->
 <!-- _class: lead invert title tiny figure-background -->
-<!-- _style: -->
 
 # 4. Executando serviços com Docker
 
@@ -451,4 +477,102 @@ Este processo é conhecido como "orquestração".
 
 ---
 
-## 4.1. Caso de uso: execução de um servidor web com banco de dados
+<!-- footer: 'Apenas trecho do código. Todos os códigos apresentados nestes slides estão disponíveis no [repositório](https://github.com/Syndelis/minicurso-docker-secomp-2025)' -->
+
+#### 4.1. Caso de uso: execução de um servidor web com banco de dados
+
+<div class="small">
+
+Considere o seguinte serviço escrito em [Python](https://python.org) com [FastAPI](https://fastapi.tiangolo.com/) e [SQLModel](https://sqlmodel.tiangolo.com/):
+
+</div>
+
+```py
+class User(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    name: str
+    age: int
+
+engine = db_connect()
+def get_db():
+    with Session(engine) as session:
+        yield session
+
+Db = Annotated[Session, Depends(get_db)]
+api = FastAPI()
+
+@api.get("/user")
+def list_users(db: Db):
+    return db.exec(select(User)).all()
+```
+
+---
+
+<div class="unequal-columns">
+
+<div class="column-23-start">
+
+`compose.yml`
+
+```yaml
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app
+    ports:
+      - 5432:5432
+
+  app:
+    build: .
+    environment:
+      DATABASE_URL: |
+      postgresql+psycopg2://user:password@db:5432/app
+    ports:
+      - 8000:8000
+```
+
+</div>
+
+<div class="column-13-end">
+
+`Dockerfile`
+
+```docker
+FROM python:3.13-alpine
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY server.py .
+ENTRYPOINT [
+  "fastapi",
+  "dev",
+  "--host",
+  "0.0.0.0",
+  "server.py"
+]
+```
+
+</div>
+
+</div>
+
+---
+
+<!-- footer: 'Minicurso Docker' -->
+<!-- _header: '' -->
+<!-- _class: lead invert title small -->
+
+# 5. Usando Docker para automações
+
+Alguns _hosts_ de repositórios Git como o [GitHub](https://github.com) e o [Forgejo](https://forgejo.org) suportam a execução de scripts diretamente em seus servidores dado algum evento, como o `push` de um novo _commit_ ou a criação de uma nova _release_.
+
+Estes scripts podem servir múltiplos propósitos e são escritos em _shell script_.
+
+Podemos nos aproveitar destas _pipelines_ para criar um fluxo de lançamento contínuo (_CD_; em inglês _Continuous Deployment_). Ao invés de escrever _scripts_ complexos de **bash** que comumente não são trivialmente testáveis localmente, podemos usar o Docker, que, novamente, nos provê ambientes reproduzíveis.
+
+![bg right:25%](./img/portal2-pipe.jpg)
+
