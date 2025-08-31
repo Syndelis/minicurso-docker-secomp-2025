@@ -126,6 +126,14 @@ style: |
     line-height: 0.5;
   }
 
+  section.end {
+    background-color: black;
+  }
+
+  section.end p {
+    color: white;
+  }
+
 ---
 
 <!-- _header: '' -->
@@ -146,7 +154,29 @@ style: |
 
 ### 0. Sobre mim
 
-<div class="warning">TODO: Write this down</div>
+<div class="unequal-columns">
+
+<div class="column-23-start">
+
+Sou Mestre em Ciência da Computação pela UFSJ.
+
+Trabalho como Engenheiro de Software há 5 anos.
+
+Mais recentemente, trabalho como Engenheiro de Software Sênior Rust para a Arionkoder.
+
+Na SECOMP 2022, participei como palestrante e apresentei a linguagem Rust.
+
+Na [SECOMP 2023](https://secomp2023.brenno.codes), ofertei um minicurso de Rust com o foco de ensinar todo o básico até funcionalidades avançadas.
+
+</div>
+
+<div class="column-13-end">
+
+![width:200px](./img/brenno.jpg)
+
+</div>
+
+</div>
 
 --- 
 
@@ -746,3 +776,46 @@ Imagens de Docker devem ser publicadas em repositórios de imagens. Exemplos des
 Cada um possuirá diferentes métodos para a autenticação, mas a ação de publicar uma imagem em qualquer caso está relacionada ao comando `docker push`. 
 
 O exemplo deste slide contém um trecho que poderia ser utilizado para publicar uma nova imagem no GHCR.
+
+---
+
+<!-- header: '' -->
+<!-- footer: '' -->
+<!-- paginate: false -->
+<!-- class: end -->
+
+# Créditos
+
+<div class="columns">
+
+<div>
+
+**Brenno Lemos** - Escrita do material
+
+- ![width:30px](./img/github-logo.png) [/Syndelis](https://github.com/Syndelis)
+- ![width:30px](./img/linkedin-logo.png) [/in/brenno-dev](https://linkeding.com/in/brenno-dev)
+
+</div>
+
+<div>
+
+**José Luis da Cruz Junior** - Validação do material, sugestões e correções técnicas e ortográficas
+
+- ![width:30px](./img/github-logo.png) [/zejuniortdr](https://github.com/zejuniortdr)
+- ![width:30px](./img/linkedin-logo.png) [/in/jose-luis-da-cruz-junior](https://www.linkedin.com/in/jose-luis-da-cruz-junior)
+
+</div>
+
+</div>
+
+---
+
+# Desbravando Rust
+
+<!-- Um livro próximo de ser lançado escrito pelo José Luis da Cruz Junior -->
+É um livro em português próximo de ser lançado. O livro tem como o objetivo de ser o material definitivo para quem tem interesse de se profissionalizar na linguagem, cobrindo desde o mais simples _Hello World_ até aplicações complexas no mundo real, como a criação de APIs e _Lambdas_ da AWS.
+
+Siga o autor para atualizações sobre seu lançamento: ![width:30px](./img/linkedin-logo.png) [/in/jose-luis-da-cruz-junior](https://www.linkedin.com/in/jose-luis-da-cruz-junior)
+
+
+![bg right:35% width:430px](./img/desbravando-rust.png)
