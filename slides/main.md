@@ -146,7 +146,29 @@ style: |
 
 ### 0. Sobre mim
 
-<div class="warning">TODO: Write this down</div>
+<div class="unequal-columns">
+
+<div class="column-23-start">
+
+Sou Mestre em Ciência da Computação pela UFSJ.
+
+Trabalho como Engenheiro de Software há 5 anos.
+
+Mais recentemente, trabalho como Engenheiro de Software Sênior Rust para a Arionkoder.
+
+Na SECOMP 2022, participei como palestrante e apresentei a linguagem Rust.
+
+Na [SECOMP 2023](https://secomp2023.brenno.codes), ofertei um minicurso de Rust com o foco de ensinar todo o básico até funcionalidades avançadas.
+
+</div>
+
+<div class="column-13-end">
+
+![width:200px](./img/brenno.jpg)
+
+</div>
+
+</div>
 
 --- 
 
